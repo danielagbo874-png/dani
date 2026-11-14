@@ -19,7 +19,6 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { guestRegex } from "@/lib/constants";
-import { isAdminEmail } from "@/lib/admin";
 import { LoaderIcon } from "./icons";
 import { toast } from "./toast";
 
@@ -37,7 +36,6 @@ export function SidebarUserNav({ user }: { user: User }) {
   const { setTheme, resolvedTheme } = useTheme();
 
   const isGuest = guestRegex.test(data?.user?.email ?? "");
-  const isAdmin = isAdminEmail(data?.user?.email ?? "");
 
   const handlePersonalize = useCallback(() => {
     router.push("/settings");
@@ -46,10 +44,6 @@ export function SidebarUserNav({ user }: { user: User }) {
   const handleThemeSelect = useCallback(() => {
     setTheme(resolvedTheme === "dark" ? "light" : "dark");
   }, [resolvedTheme, setTheme]);
-
-  const handleAdminPanel = useCallback(() => {
-    router.push("/admin");
-  }, [router]);
 
   const handleAuthClick = useCallback(() => {
     if (status === "loading") {
@@ -117,14 +111,6 @@ export function SidebarUserNav({ user }: { user: User }) {
             >
               Personalize Nexa
             </DropdownMenuItem>
-            {isAdmin ? (
-              <DropdownMenuItem
-                className="cursor-pointer text-[13px]"
-                onSelect={handleAdminPanel}
-              >
-                Admin panel
-              </DropdownMenuItem>
-            ) : null}
             <DropdownMenuItem
               className="cursor-pointer text-[13px]"
               data-testid="user-nav-item-theme"
